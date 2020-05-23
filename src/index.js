@@ -3,11 +3,11 @@ const express = require("express")
 const {v4} = require('uuid');
 const ioc = require('socket.io-client');
 const jwt = require('jsonwebtoken');
-const sendTx = require("./sendTx.js")
-const checkSignedTx = require("./checkSignedTx.js")
+const betting = require("./betting.js")
+//const checkSignedTx = require("./checkSignedTx.js")
 const TronWeb = require("TronWeb")
 const tronWeb = new TronWeb({fullHost: 'https://api.shasta.trongrid.io'});
-const adr = "TQuRmZh8G6CZF3J43NZ33MwjWRbGPrH3iC";
+const adr = "TA1CV3VQcEF3Kznibi9yX5WPfouibjxn6X";
 var key = "secret";
 
 const port = 3000
@@ -61,25 +61,23 @@ io.on('connect', async socket => {
       let sentSign = isTeam.filter(f => f.signedTx !== undefined)
       console.log(sentSign)
       // if both have sent the Tx, check it and broadcast
-       if(sentSign.length === teamSize*2){
-        if(await checkSignedTx(adr, sentSign)){
-          if(await sendTx(io, teamSize, sentSign)){
-            //connect
-            console.log("start game")
-            let connect = ioc("http://localhost:4000")
-            let betInfo = [
-              {uuid: v4(), adr: sentSign[0].address, key: v4()},
-              {uuid: v4(), adr: sentSign[1].address, key: v4()},
-            ]
+      if(sentSign.length === teamSize*2){
+        if(await betting(adr, sentSign)){
+          //connect
+          console.log("start game")
+          let connect = ioc("http://localhost:4000")
+          let betInfo = [
+            {uuid: v4(), adr: sentSign[0].address, key: v4()},
+            {uuid: v4(), adr: sentSign[1].address, key: v4()},
+          ]
 
-            let bet = jwt.sign({betInfo}, key)
-            console.log("bet", bet)
-            connect.emit("addBet", {bet});
+          let bet = jwt.sign({betInfo}, key)
+          console.log("bet", bet)
+          connect.emit("addBet", {bet});
 
-            // send key to client an redirect
-            sentSign.forEach((t, i) => t.socket.emit("connectKey", {key: betInfo[i].key}))
-          }
-        }
+          // send key to client an redirect
+          sentSign.forEach((t, i) => t.socket.emit("connectKey", {key: betInfo[i].key}))
+        }else{console.log("sending fail")}
 
       }else{
         console.log("waiting for more signs")
