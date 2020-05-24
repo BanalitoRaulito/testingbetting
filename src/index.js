@@ -4,10 +4,9 @@ const {v4} = require('uuid');
 const ioc = require('socket.io-client');
 const jwt = require('jsonwebtoken');
 const betting = require("./betting.js")
-//const checkSignedTx = require("./checkSignedTx.js")
 const TronWeb = require("TronWeb")
 const tronWeb = new TronWeb({fullHost: 'https://api.shasta.trongrid.io'});
-const adr = "TA1CV3VQcEF3Kznibi9yX5WPfouibjxn6X";
+const adr = "TRLSHUmxVA8EPED6vnnsDPxpcqefQHqNjM";
 var key = "secret";
 
 const port = 3000
