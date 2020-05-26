@@ -3,11 +3,33 @@
   <head>
     <meta charset="utf-8">
     <title>Transaction testing</title>
+    <style>
+      .hidden{ display: none; }
+    </style>
   </head>
   <body>
-    <div id="data">
-      <button id="play" onclick="play()">Play NOW</button>
+    <div id="menu">
+      <button id="play" onclick="play()">Search for opponent</button>
       <button onclick="signNow()">sign</button>
+
+      <p id="searching" class="hidden">
+        Searching for one Player...<br>
+        <button onclick="cancel">Cancel Searching</button>
+      </p>
+      <p id="acceptNow" class="hidden">
+        Accept the bet<br>
+        <span id="timeLeft"></span>
+      </p>
+
+      <p id="waitingRes" class="hidden">Waiting for confirmations</p>
+
+      <p id="failed" class="hidden">Some one failed to accept. Search again?</p>
+      <p id="complete" class="hidden">Successful transfer. Joining the game...</p>
+
+      <p id="haveBetted" class="hidden">
+        You already have bet. You should be in a game.<br>
+        This could be an error.
+      </p>
     </div>
 
     <script src="TronWeb.js"></script>

@@ -1,4 +1,4 @@
-const adr = "TRLSHUmxVA8EPED6vnnsDPxpcqefQHqNjM";
+const adr = "TCJZzZDq2Pn5msHTLCtq81eqmk5efmWjUU";
 var address = '';
 var myPort = 3000;
 var socket = io.connect(window.location.hostname +':'+ myPort, {secure: true});
@@ -29,9 +29,11 @@ var play = async () => {
       let howMuchOnSmartContract = res.toNumber()
 
       if(howMuchOnSmartContract === 0){
-        socket.emit("play", {address})
+        socket.emit("play", {type: "connect", address})
+        $("#searching").removeClass("hidden")
       }else{
-        $("#data").html("You already bet")
+        $("#haveBetted").removeClass("hidden")
+        $("#play").addClass("hidden")
       }
     }catch(err){console}
   }else{
@@ -52,16 +54,40 @@ var signNow = async () => {
   }
 }
 
+var startCount = () => {
+  var count = 50;
+  let int = setInterval(() => {
+    $("#timeLeft").text(count +" seconds left")
+    count--;
+    if(count <= 0){clearInterval(int)}
+  }, 1000)
+}
+
+var cancel = () => { if(address){ socket.emit("play", {type: "cancel", address}) } }
+
 socket.on("connectKey", data => {
+  console.log("key recived")
   document.cookie = "connectKey="+data.key+"; path=/";
 })
 
-socket.on("signNow", async () => {
-  //await signNow()
-})
-
-
 socket.on("msg", async data => {
-  $("#data").html(data.msg)
-  console.log(data)
+  const msg = data.msg;
+  console.log(msg)
+
+  if(msg === "acceptNow"){
+    //await signNow()
+    $("#acceptNow").show()
+    $("#play, #searching").hide()
+    startCount()
+  }else if(msg === "waitingRes"){
+    $("#waitingRes").show()
+    $("#play, #acceptNow, #searching").hide()
+  }else if(msg === "failed"){
+    $("#play, #failed").show()
+    $("#acceptNow, #searching, #waitingRes").hide()
+  }else if(msg === "complete"){
+    $("#complete").show()
+    $("#play, #acceptNow, #searching, #waitingRes").hide()
+  }
+
 })

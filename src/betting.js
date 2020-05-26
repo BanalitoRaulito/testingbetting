@@ -1,8 +1,8 @@
 const TronWeb = require("TronWeb")
 const tronWeb = new TronWeb({fullHost: 'https://api.shasta.trongrid.io'});
 
-// (contract_address, [{address: client_address, signedTx: object_signed_tx}, ...])
-module.exports = async (adr, bets) => {
+// (contract_address, bet_amount_in_sun, [{address: client_address, signedTx: object_signed_tx}, ...])
+module.exports = async (adr, betAmount, bets) => {
   const contract_adr = tronWeb.address.toHex(adr);
   // get contract instance
   let inst = await tronWeb.contract().at(adr);
@@ -16,14 +16,18 @@ module.exports = async (adr, bets) => {
     const address = tronWeb.address.toHex(b.address);
     const value =  b.signedTx.raw_data.contract[0].parameter.value;
 
-    const feeLimit = b.signedTx.raw_data.fee_limit > 1000000;
+    const feeLimit = b.signedTx.raw_data.fee_limit > 10000000;
     const check_address = value.owner_address === address;
     const check_adr = value.contract_address === contract_adr;
+    const check_betAmount = value.call_value == betAmount;
     tronWeb.setAddress(address)
 
-    if(feeLimit && check_address && check_adr){
-      console.log("checks", feeLimit, check_address, check_adr)
+    if(feeLimit && check_address && check_adr && check_betAmount){
+      console.log("checks", feeLimit, check_address, check_adr, check_betAmount)
       return true
+    }else{
+      console.log("checks", feeLimit, check_address, check_adr, check_betAmount)
+      console.log(check_betAmount, value.call_value, betAmount)
     }
   })
   if(!sigValues){

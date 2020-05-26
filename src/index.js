@@ -1,12 +1,10 @@
 const socket = require("socket.io")
 const express = require("express")
-const {v4} = require('uuid');
-const ioc = require('socket.io-client');
-const jwt = require('jsonwebtoken');
 const betting = require("./betting.js")
+const connect = require("./connect.js")
 const TronWeb = require("TronWeb")
 const tronWeb = new TronWeb({fullHost: 'https://api.shasta.trongrid.io'});
-const adr = "TRLSHUmxVA8EPED6vnnsDPxpcqefQHqNjM";
+const adr = "TCJZzZDq2Pn5msHTLCtq81eqmk5efmWjUU";
 var key = "secret";
 
 const port = 3000
@@ -16,6 +14,11 @@ var server = app.listen(port, () => {
 })
 app.use(express.static('../public'));
 
+const ioc = require('socket.io-client');
+let connectt = ioc('http://cs.tokenswim.com:3000')
+connectt.emit("getInfo")
+connectt.on("reciveInfo", data => console.log(data))
+
 
 const teamSize = 1;
 var searching = [];
@@ -23,66 +26,72 @@ var teams = []
 
 var io = socket(server);
 io.on('connect', async socket => {
+  //make teams
   socket.on("play", data => {
-    // if not in for searching. push()
-    let isSearching = searching.find(f => f.address === data.address);
-    if(isSearching === undefined){
-      searching.push({address: data.address, socket})
-    }else{
-      isSearching.socket = socket
+    console.log("connect")
+    if(tronWeb.isAddress(data.address)){
+      let address = data.address;
+      // if not in for searching. push()
+      let isSearching = searching.find(f => f.address === address);
+      //connect or cancel
+      if(data.type === "connect"){
+        if(isSearching === undefined){
+          searching.push({address: data.address, socket})
+        }else{
+          isSearching.socket = socket
+        }
+      }else if(data.type === "cancel"){
+        let isSearchingIndex = searching.findIndex(f => f.address === address);
+        searching.splice(isSearchingIndex, -1)
+        console.log("cancel", searhing)
+      }
     }
-    socket.join("searching")
 
     //if 2 in searhing. move them to teams[]
     if(searching.length === teamSize*2){
-      teams.push([ searching[0], searching[1] ])
+      teams.push({ data: [searching[0], searching[1]], status: true })
       searching.splice(0, 2)
       console.log(searching, teams)
 
-      io.to("searching").emit("signNow")
+      teams[teams.length-1].data.forEach(s => s.socket.emit("msg", {msg: "acceptNow"}))
       console.log("sign now")
     }else{
       console.log("wait")
     }
   })
 
+
+  // deal sigs and connect
   socket.on('signed', async data => {
     console.log("sig recived")
-
-    let isTeam = teams.find(t => t.find(f => f.address === data.address));
-    let isPlayer = isTeam.find(f => f.address === data.address);
+    let isTeam = teams.filter(k => k.status === true).find(t => t.data.find(f => f.address === data.address));
+    if(!isTeam){console.log("team doesn't exist"); return}
+    let isPlayer = isTeam.data.find(f => f.address === data.address);
     // if player exists
     if(isPlayer !== undefined){
       // save the TX signsature
       isPlayer.signedTx = data.signed
       console.log(isPlayer)
 
-      let sentSign = isTeam.filter(f => f.signedTx !== undefined)
+      isPlayer.socket = socket;
+      socket.emit("msg", {msg: "waitingRes"})
+
+      let sentSign = isTeam.data.filter(f => f.signedTx !== undefined)
       console.log(sentSign)
       // if both have sent the Tx, check it and broadcast
       if(sentSign.length === teamSize*2){
-        if(await betting(adr, sentSign)){
+        if(await betting(adr, tronWeb.toSun(100), sentSign)){
           //connect
-          console.log("start game")
-          let connect = ioc("http://localhost:4000")
-          let betInfo = [
-            {uuid: v4(), adr: sentSign[0].address, key: v4()},
-            {uuid: v4(), adr: sentSign[1].address, key: v4()},
-          ]
-
-          let bet = jwt.sign({betInfo}, key)
-          console.log("bet", bet)
-          connect.emit("addBet", {bet});
-
-          // send key to client an redirect
-          sentSign.forEach((t, i) => t.socket.emit("connectKey", {key: betInfo[i].key}))
-        }else{console.log("sending fail")}
-
+          isTeam.data.forEach(s => s.socket.emit("msg", {msg: "complete"}))
+          await connect(sentSign, key)
+        }else{
+          isTeam.data.forEach(s => s.socket.emit("msg", {msg: "failed"}))
+          console.log("sending fail")
+        }
+        isTeam.status = false;
       }else{
         console.log("waiting for more signs")
       }
     }
   })
-
-
 })
