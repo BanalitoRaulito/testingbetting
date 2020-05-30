@@ -1,4 +1,4 @@
-const TronWeb = require("TronWeb")
+const TronWeb = require("tronweb")
 const tronWeb = new TronWeb({fullHost: 'https://api.shasta.trongrid.io'});
 
 // (contract_address, bet_amount_in_sun, [{address: client_address, signedTx: object_signed_tx}, ...])
