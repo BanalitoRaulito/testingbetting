@@ -4,7 +4,7 @@ const betting = require("./betting.js")
 const connect = require("./connect.js")
 const TronWeb = require("tronweb")
 const tronWeb = new TronWeb({fullHost: 'https://api.shasta.trongrid.io'});
-const adr = "TJHMzKKRqScDu46Zwu7JvigX27arjrot82";
+const adr = "TEWsz4AJPAL7nctQbv56kT7fr6MVu7bwj7";
 var key = "secret";
 
 const port = 80
