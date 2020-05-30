@@ -8,7 +8,7 @@ module.exports = async (sentSign, key) => {
   let server = servers.find(async n => {
     try{
       let s = ioc('http://'+ n.ip +':'+ n.port)
-
+      s.emit("getInfo")
       let recive = await promiseRecive(s)
       console.log("recive ", recive)
       if(recive < 1){
@@ -41,6 +41,5 @@ let promiseRecive = server => {
       resolve(data.players);
       return;
     })
-    setTimeout(() => reject("response timeout"), 1000)
   })
 }

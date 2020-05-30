@@ -113,8 +113,10 @@ let promiseBlocks = async sent_to_chain => {
         if(txInfo.every(b => !!Number.isInteger(b.blockNumber))){
           //get biggest blockNr
           const blockNumber = Math.max(...txInfo.map(a => a.blockNumber))
-          let getBlock = await tronWeb.trx.getBlockTransactionCount(blockNumber)
-          if(blockNumber > 18){
+          let getBlock = await tronWeb.trx.getCurrentBlock()
+          let getBlockNr = getBlock.block_header.raw_data.number
+          console.log("on block", getBlockNr, "- waited", getBlockNr - blockNumber)
+          if(getBlockNr - blockNumber > 18){
             //when 19 blocks have been waited
             console.log("done 19 blocks")
             clearInterval(interCan)

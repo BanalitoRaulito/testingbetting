@@ -4,7 +4,7 @@ const betting = require("./betting.js")
 const connect = require("./connect.js")
 const TronWeb = require("TronWeb")
 const tronWeb = new TronWeb({fullHost: 'https://api.shasta.trongrid.io'});
-const adr = "TCJZzZDq2Pn5msHTLCtq81eqmk5efmWjUU";
+const adr = "TM8pBRq27ngfLsARxPW7ACwZxUdTe4daRX";
 var key = "secret";
 
 const port = 3000
@@ -13,11 +13,6 @@ var server = app.listen(port, () => {
   console.log('Running on localhost:', port)
 })
 app.use(express.static('../public'));
-
-const ioc = require('socket.io-client');
-let connectt = ioc('http://cs.tokenswim.com:3000')
-connectt.emit("getInfo")
-connectt.on("reciveInfo", data => console.log(data))
 
 
 const teamSize = 1;
@@ -76,10 +71,19 @@ io.on('connect', async socket => {
       isPlayer.socket = socket;
       socket.emit("msg", {msg: "waitingRes"})
 
+      var timeout = setTimeout(() => {
+        console.log("timeout")
+        isTeam.status = false;
+        isTeam.data.forEach(s => s.socket.emit("msg", {msg: "cancel"}))
+        console.log("sending fail")
+      }, 52000)
+
       let sentSign = isTeam.data.filter(f => f.signedTx !== undefined)
       console.log(sentSign)
       // if both have sent the Tx, check it and broadcast
       if(sentSign.length === teamSize*2){
+        clearTimeout(timeout)
+        console.log(timeout)
         if(await betting(adr, tronWeb.toSun(100), sentSign)){
           //connect
           isTeam.data.forEach(s => s.socket.emit("msg", {msg: "complete"}))
@@ -90,7 +94,7 @@ io.on('connect', async socket => {
         }
         isTeam.status = false;
       }else{
-        console.log("waiting for more signs")
+        console.log("waiting for more signs 1")
       }
     }
   })

@@ -1,4 +1,4 @@
-const adr = "TCJZzZDq2Pn5msHTLCtq81eqmk5efmWjUU";
+const adr = "TM8pBRq27ngfLsARxPW7ACwZxUdTe4daRX";
 var address = '';
 var myPort = 3000;
 var socket = io.connect(window.location.hostname +':'+ myPort, {secure: true});
@@ -77,17 +77,20 @@ socket.on("msg", async data => {
   if(msg === "acceptNow"){
     //await signNow()
     $("#acceptNow").show()
-    $("#play, #searching").hide()
+    $("#play, #searching, #cancel, #failed").hide()
     startCount()
   }else if(msg === "waitingRes"){
     $("#waitingRes").show()
-    $("#play, #acceptNow, #searching").hide()
+    $("#play, #acceptNow, #searching, #cancel, #failed").hide()
   }else if(msg === "failed"){
     $("#play, #failed").show()
-    $("#acceptNow, #searching, #waitingRes").hide()
+    $("#acceptNow, #searching, #waitingRes, #cancel").hide()
+  }else if(msg === "cancel"){
+    $("#play, #cancel").show()
+    $("#acceptNow, #searching, #waitingRes, #failed").hide()
   }else if(msg === "complete"){
     $("#complete").show()
-    $("#play, #acceptNow, #searching, #waitingRes").hide()
+    $("#play, #acceptNow, #searching, #waitingRes, #failed, #cancel").hide()
   }
 
 })
