@@ -1,4 +1,4 @@
-const adr = "TM8pBRq27ngfLsARxPW7ACwZxUdTe4daRX";
+const adr = "TJHMzKKRqScDu46Zwu7JvigX27arjrot82";
 var address = '';
 var myPort = 3000;
 var socket = io.connect(window.location.hostname +':'+ myPort, {secure: true});
@@ -75,7 +75,7 @@ socket.on("msg", async data => {
   console.log(msg)
 
   if(msg === "acceptNow"){
-    //await signNow()
+    await signNow()
     $("#acceptNow").show()
     $("#play, #searching, #cancel, #failed").hide()
     startCount()
