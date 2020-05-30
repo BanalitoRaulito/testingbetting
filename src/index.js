@@ -7,7 +7,7 @@ const tronWeb = new TronWeb({fullHost: 'https://api.shasta.trongrid.io'});
 const adr = "TJHMzKKRqScDu46Zwu7JvigX27arjrot82";
 var key = "secret";
 
-const port = 3000
+const port = 80
 var app = express()
 var server = app.listen(port, () => {
   console.log('Running on localhost:', port)

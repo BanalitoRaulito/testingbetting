@@ -1,6 +1,6 @@
 const adr = "TJHMzKKRqScDu46Zwu7JvigX27arjrot82";
 var address = '';
-var myPort = 3000;
+var myPort = 80;
 var socket = io.connect(window.location.hostname +':'+ myPort, {secure: true});
 let signed;
 const options = {
