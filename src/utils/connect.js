@@ -1,23 +1,18 @@
 const ioc = require('socket.io-client');
 const {v4} = require('uuid');
 const jwt = require('jsonwebtoken');
-const servers = require('./serversFile.js')
+const servers = require('../serversFile.js')
 
 module.exports = async (sentSign, key) => {
   console.log("start game", servers)
-  let server = servers.find(async n => {
-    try{
-      let s = ioc('http://'+ n.ip +':'+ n.port)
-      s.emit("getInfo")
-      let recive = await promiseRecive(s)
-      console.log("recive ", recive)
-      if(recive < 1){
-        console.log("this server", n.port)
-        return true
-      }
-    }catch(err){console.log(err)}
-  })
-  console.log("server", server)
+  try{
+    let serverMap = servers.map(s => promiseRecive(s))
+    console.log("server map", serverMap)
+    let server = await Promise.race(serverMap)
+    console.log("server", server.id)
+  }catch(err){
+    console.log(err)
+  }
 
   let betInfo = [
     {uuid: v4(), adr: sentSign[0].address, key: v4()},
@@ -26,20 +21,26 @@ module.exports = async (sentSign, key) => {
 
   let bet = jwt.sign({betInfo}, key)
   console.log("bet", bet)
-  let connect = ioc("http://"+ server.ip +":"+ server.port)
-  //let connect = ioc("http://localhost:4000")
+  //let connect = server
+  let connect = ioc("http://localhost:4000")
   connect.emit("addBet", {bet});
 
   // send key to client an redirect
   sentSign.forEach((t, i) => t.socket.emit("connectKey", {key: betInfo[i].key}))
 }
 
-let promiseRecive = server => {
+let promiseRecive = s => {
   return new Promise((resolve, reject) => {
+    let server = ioc('http://'+ s.ip +':'+ s.port)
+    server.emit("getInfo")
     server.on("reciveInfo", data => {
       console.log("players", data.players)
-      resolve(data.players);
-      return;
+      if(data.players < 1){
+        console.log("server", s.port)
+        resolve(server)
+      }else{
+        reject(false)
+      }
     })
   })
 }

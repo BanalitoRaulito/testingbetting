@@ -54,8 +54,8 @@ module.exports = async (adr, betAmount, bets) => {
   // how much on acc
   let balanceMap = bets.map(b => tronWeb.trx.getBalance(b.address))
   let balance = await Promise.all(balanceMap)
-  if(!balance.every(b => b > 100000000)){
-    console.log(balance, balance.every(b => b > 100000000))
+  if(!balance.every(b => b > betAmount)){
+    console.log(balance, balance.every(b => b > betAmount))
     return
   }
 
@@ -64,7 +64,7 @@ module.exports = async (adr, betAmount, bets) => {
   if(bets.every(b => b.signedTx.raw_data.expiration > timestamp + 2000)){
     console.log("still valid", bets.map(b => b.signedTx.raw_data.expiration))
   }else{
-    console.log("one on tx expired")
+    console.log("one on tx expired", timestamp+2000, bets.map(b => b.signedTx.raw_data.expiration))
     return
   }
 

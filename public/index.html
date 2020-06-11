@@ -3,27 +3,33 @@
   <head>
     <meta charset="utf-8">
     <title>Transaction testing</title>
+    <link rel="stylesheet" href="main.css">
     <style>
       .hidden{ display: none; }
     </style>
   </head>
   <body>
     <div id="menu">
-      <button id="play" onclick="play()">Search for opponent</button>
-      <button onclick="signNow()">sign</button>
+
+        <button id="play" onclick="play()">Search for opponent</button>
+        <button onclick="signNow()">sign</button>
+      <br>
+
 
       <p id="searching" class="hidden">
         Searching for one Player...<br>
-        <button onclick="cancel">Cancel Searching</button>
+        <button onclick="cancel()">Cancel Searching</button>
       </p>
       <p id="acceptNow" class="hidden">
         Accept the bet<br>
         <span id="timeLeft"></span>
       </p>
 
-      <p id="waitingRes" class="hidden">Waiting for confirmations</p>
+      <p id="waitingRes" class="hidden">Waiting for confirmations. Don't leave!</p>
 
-      <p id="cancel" class="hidden"></p>
+      <p id="loginPlz" class="hidden">Please Login to your Tron wallet and Refesh the page</p>
+
+      <p id="cancel" class="hidden">Some one didn't accept</p>
       <p id="failed" class="hidden">Some one failed to accept. Search again?</p>
       <p id="complete" class="hidden">Successful transfer. Joining the game...</p>
 
@@ -31,6 +37,19 @@
         You already have bet. You should be in a game.<br>
         This could be an error.
       </p>
+
+      <br>
+
+      <div id="lobby">
+        <h3>Lookig for a game:</h3>
+        <p class="looking"></p>
+
+        <h3>Playing now:</h3>
+        <p class="inGame"></p>
+
+        <h3>Old games:</h3>
+        <p class="oldGames"></p>
+      </div>
     </div>
 
     <script src="TronWeb.js"></script>
@@ -38,5 +57,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
     <script src="uuid.js"></script>
     <script src="main.js"></script>
+    <script src="showInfo.js"></script>
   </body>
 </html>
