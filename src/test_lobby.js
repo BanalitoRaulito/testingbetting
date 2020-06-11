@@ -34,7 +34,7 @@ module.exports = class Lobby{
 
 
   expectWithCancel(){
-    expect(this.socket.emit.mock.calls.length).toBe(3)
+    expect(this.socket.emit.mock.calls.length).toBe(2)
     expect(this.socket.emit.mock.calls).toEqual([
       ["msg", { "msg": "searching" }],
       ["msg", { "msg": "cancel" }]
