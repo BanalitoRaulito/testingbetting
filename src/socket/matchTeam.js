@@ -1,13 +1,17 @@
 const TronWeb = require("tronweb")
 const tronWeb = new TronWeb({fullHost: 'https://api.shasta.trongrid.io'});
 
-module.exports = (socket, data, searching, teams, teamSize) => {
+module.exports = (socket, data, searching, teams, teamSize = 1) => {
   if(tronWeb.isAddress(data.address)){
     let address = data.address;
     // if not in for searching. push()
     let isSearching = searching.find(f => f.address === address);
     // is active team
-    let isTeam = teams.filter(k => k.status === true).find(t => t.data.find(f => f.address === data.address));
+    let isTeam = teams
+      .filter(k => k.status === true)
+      .find(t =>
+        t.data.find(f => f.address === data.address
+      ));
 
     //connect or cancel
     if(data.type === "connect"){
