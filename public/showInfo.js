@@ -15,24 +15,24 @@ socket.on("sendInfo", data => {
 
   if(data.info.gamesOn.length > 0){
     data.info.gamesOn.forEach(s => {
-      playing += s.team1.score +" - "+ s.team2.score +"<br>";
+      playing += s.t1_score +" - "+ s.t2_score +"<br>";
 
-      s.team1.bets.forEach(t => playing += " "+scanLink(t.adr)+" ")
+      s.t1.forEach(t => playing += " "+scanLink(t.adr)+" ")
 
       playing += " - "
-      s.team2.bets.forEach(t => playing += " "+scanLink(t.adr)+" ")
+      s.t2.forEach(t => playing += " "+scanLink(t.adr)+" ")
       playing += "<br><br>"
     })
   }else{ playing = "<br>" }
 
   if(data.info.oldGames.length > 0){
     data.info.oldGames.reverse().forEach(s => {
-      oldGames += s.team1.score +" - "+ s.team2.score +"<br>";
+      oldGames += s.t1_score +" - "+ s.t2_score +"<br>";
 
-      s.team1.bets.forEach(t => oldGames += " "+scanLink(t.adr)+" ")
+      s.t1.forEach(t => oldGames += " "+scanLink(t.adr)+" ")
 
       oldGames += " - "
-      s.team2.bets.forEach(t => oldGames += " "+scanLink(t.adr)+" ")
+      s.t2.forEach(t => oldGames += " "+scanLink(t.adr)+" ")
       oldGames += "<br><br>"
     })
   }else{ oldGames = "<br>" }

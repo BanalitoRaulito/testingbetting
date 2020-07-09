@@ -1,9 +1,12 @@
 module.exports = (data, gamesOn) => {
   let id = data.thisServerId
-  if(data.team1.bets.length > 0){
-    data.team1.bets = data.team1.bets.map(m => {return {...m, key: undefined}})
-    data.team2.bets = data.team2.bets.map(m => {return {...m, key: undefined}})
-    gamesOn.set(id, {team1: data.team1, team2: data.team2})
+  if(!data.delete){
+    gamesOn.set(id, {
+      t1: data.t1,
+      t2: data.t2,
+      t1_score: data.t1_score,
+      t2_score: data.t2_score
+    })
   }else{
     gamesOn.delete(id)
   }

@@ -1,4 +1,4 @@
-const adr = "TUp8qy9Gztb665D7XzcFFkD74vfL8KvHqT";
+const adr = "TV1oVqcdJKKF9M554ir1GcJpDnXyWVCeRf";
 var address = '';
 var myPort = 3000;
 var socket = io.connect(window.location.hostname +':'+ myPort, {secure: true});

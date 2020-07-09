@@ -14,10 +14,23 @@ module.exports = async (sentSign, key) => {
     console.log(err)
   }
 
-  let betInfo = [
-    {uuid: v4(), adr: sentSign[0].address, key: v4()},
-    {uuid: v4(), adr: sentSign[1].address, key: v4()},
-  ]
+  let betInfo = sentSign.map(s => {
+    return {
+      ...s,
+      adr: s.address,
+      uuid: v4(),
+      key: v4(),
+      isJoined: false,
+      signedTx: undefined,
+      socket: undefined
+    }
+  })
+  console.log("betsssss")
+  console.log(betInfo)
+  // let betInfo = [
+  //   {uuid: v4(), adr: sentSign[0].address, key: v4(), isJoined: false},
+  //   {uuid: v4(), adr: sentSign[1].address, key: v4(), isJoined: false},
+  // ]
 
   let bet = jwt.sign({betInfo}, key)
   console.log("bet", bet)

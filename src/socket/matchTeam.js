@@ -35,7 +35,7 @@ module.exports = (socket, data, searching, teams, teamSize = 1) => {
   //if 2 in searhing. move them to teams[]
   if(searching.length === teamSize*2){
     teams.push({ data: [searching[0], searching[1]], status: true })
-    searching.splice(0, 2)
+    searching.splice(0, teamSize*2)
     console.log(searching, teams)
 
     let i = teams.length-1;

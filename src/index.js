@@ -5,7 +5,8 @@ var acceptTeam = require("./socket/acceptTeam.js")
 var matchTeam = require("./socket/matchTeam.js")
 var editPlaying = require("./socket/editPlaying.js")
 var saveBet = require("./socket/saveBet.js")
-const adr = "TUp8qy9Gztb665D7XzcFFkD74vfL8KvHqT";
+var connect = require("./utils/connect.js")
+const adr = "TV1oVqcdJKKF9M554ir1GcJpDnXyWVCeRf";
 var key = "secret";
 
 const port = 3000
