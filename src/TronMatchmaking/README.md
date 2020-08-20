@@ -24,7 +24,7 @@ io.on('connect', async socket => {
 })
 ```
 
-### new TronMatchMaking(contract_adr, tronWeb_options)
+#### new TronMatchMaking(contract_adr, tronWeb_options)
 ```javascript
 // Inputs
 let contract_adr = "TNR4oeTsvfAfAbYGP2qmEWynFCfSXV6yH7" // Smart Contract Hash (Address)
@@ -32,10 +32,10 @@ let tronWeb_options = {fullHost: 'https://api.nileex.io'} // Select the network 
 ```
 #
 #
-##### Only three simple functions: 1) add 2) match 3) accept
+#### Only three simple functions: 1) add 2) match 3) accept
 #
 #
-### addPlayer(data, socket)
+#### addPlayer(data, socket)
 ```javascript
 // Inputs
 let data = {
@@ -52,14 +52,14 @@ socket.on("msg", msg => {console.log(msg)})
 // RETURNS <str> "searching" or "cancel"
 ```
 
-### matchTeam()
+#### matchTeam()
 ```javascript
 // socket msg can be: "acceptNow"
 
 // RETURNS <str> undefined or "signNow"
 ```
 
-### acceptTeam(data)
+#### acceptTeam(data)
 ```javascript
 // Inputs
 let data = {
