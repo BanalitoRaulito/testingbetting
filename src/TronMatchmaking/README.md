@@ -1,9 +1,9 @@
-# Tron Matchmaker
+# Tron MatchMaker
 
- To get you started:
+### To get you started:
 
 ```javascript
-new TronMachmaking(
+let tronMatchMaking = new TronMachMaking(
   "TNR4oeTsvfAfAbYGP2qmEWynFCfSXV6yH7",
   {fullHost: 'https://api.nileex.io'}
 )
@@ -12,25 +12,29 @@ var io = socket(server);
 io.on('connect', async socket => {
   // make teams
   socket.on("play", data => {
-    tronMachmaking.addPlayer(data, socket) // add a player in searching list
-    tronMachmaking.matchTeam()             // tries to match
+    tronMatchmaking.addPlayer(data, socket) // add a player in searching list
+    tronMatchmaking.matchTeam()             // tries to match
   })
 
   // deal with signatures
   socket.on('signed', async data => {
-    await tronMachmaking.acceptTeam(data) // waits(max 50sec) for all the signatures
-                                          // then checks signatures and broadcasts then to Tron blockchain
+    await tronMatchmaking.acceptTeam(data) // waits(max 50sec) for all the signatures
+                                           // then checks signatures and broadcasts then to Tron blockchain
   })
 })
 ```
 
-### new TronMachmaking(contract_adr, tronWeb_options)
+### new TronMatchMaking(contract_adr, tronWeb_options)
 ```javascript
 // Inputs
 let contract_adr = "TNR4oeTsvfAfAbYGP2qmEWynFCfSXV6yH7" // Smart Contract Hash (Address)
 let tronWeb_options = {fullHost: 'https://api.nileex.io'} // Select the network (other tronWeb options)
 ```
-
+#
+#
+##### Only three simple functions: 1) add 2) match 3) accept
+#
+#
 ### addPlayer(data, socket)
 ```javascript
 // Inputs
