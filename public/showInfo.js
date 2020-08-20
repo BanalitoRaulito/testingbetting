@@ -9,11 +9,13 @@ socket.on("sendInfo", data => {
   let playing = ""
   let oldGames = ""
 
-  if(data.info.searching.length > 0){
+  if(data.info.searching
+  && data.info.searching.length > 0){
     data.info.searching.forEach(s => looking += s.address + "<br>")
   }else{ looking = "<br>" }
 
-  if(data.info.gamesOn.length > 0){
+  if(data.info.gamesOn
+  && data.info.gamesOn.length > 0){
     data.info.gamesOn.forEach(s => {
       playing += s.t1_score +" - "+ s.t2_score +"<br>";
 
@@ -25,7 +27,8 @@ socket.on("sendInfo", data => {
     })
   }else{ playing = "<br>" }
 
-  if(data.info.oldGames.length > 0){
+  if(data.info.oldGames
+ && data.info.oldGames.length > 0){
     data.info.oldGames.reverse().forEach(s => {
       oldGames += s.t1_score +" - "+ s.t2_score +"<br>";
 

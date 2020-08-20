@@ -1,4 +1,4 @@
-const adr = "TV1oVqcdJKKF9M554ir1GcJpDnXyWVCeRf";
+const adr = "TNR4oeTsvfAfAbYGP2qmEWynFCfSXV6yH7";
 var address = '';
 var myPort = 3000;
 var socket = io.connect(window.location.hostname +':'+ myPort, {secure: true});
@@ -32,7 +32,7 @@ var play = async () => {
       let inst = await tronWeb.contract().at(adr);
       let res = await inst.showBet(address).call()
       let howMuchOnSmartContract = res.toNumber()
-
+      console.log("SM balance", howMuchOnSmartContract)
       if(howMuchOnSmartContract === 0){
         console.log("play")
         socket.emit("play", {type: "connect", address})
@@ -40,7 +40,7 @@ var play = async () => {
         $("#haveBetted").show()
         $("#play").hide()
       }
-    }catch(err){console}
+    }catch(err){console.log(err)}
   }else{
     $("#loginPlz").show()
     console.log("not logged in")

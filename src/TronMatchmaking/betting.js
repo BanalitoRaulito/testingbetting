@@ -1,8 +1,9 @@
-const TronWeb = require("tronweb")
-const tronWeb = new TronWeb({fullHost: 'https://api.shasta.trongrid.io'});
+// contract_address
+// bet_amount_in_sun
+// [{address: client_address, signedTx: object_signed_tx}, ...]
+// tronWeb
 
-// (contract_address, bet_amount_in_sun, [{address: client_address, signedTx: object_signed_tx}, ...])
-module.exports = async (adr, betAmount, bets) => {
+module.exports = async (adr, betAmount, bets, tronWeb) => {
   const contract_adr = tronWeb.address.toHex(adr);
   // get contract instance
   let inst = await tronWeb.contract().at(adr);
@@ -77,7 +78,7 @@ module.exports = async (adr, betAmount, bets) => {
   }
 
   //wait 19 blocks
-  let waitBlocks = await promiseBlocks(sent_to_chain)
+  let waitBlocks = await promiseBlocks(sent_to_chain, tronWeb)
   if(!waitBlocks){
     console.log("waiting block err", waitBlocks)
     return
@@ -98,7 +99,7 @@ module.exports = async (adr, betAmount, bets) => {
 
 
 // waits 19 blocks
-let promiseBlocks = async sent_to_chain => {
+let promiseBlocks = async (sent_to_chain, tronWeb) => {
   return new Promise( async (resolve,reject) => {
     try {
       const timeout = 1000;
