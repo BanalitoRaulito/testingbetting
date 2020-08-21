@@ -11,7 +11,7 @@ module.exports = class TronMatchMaking_Utils extends TronMatchMaking{
   }
 
   sendInfo(socket){
-    let n_searching = this.searching.map(a => {return {...a, socket: undefined}})
+    let n_searching = this.searchingPlayers.map(a => {return {...a, socket: undefined}})
     var info = {
       searching: n_searching,
       oldGames: this.oldGames,

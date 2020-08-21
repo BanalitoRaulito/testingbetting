@@ -1,8 +1,9 @@
 module.exports = class Player{
-  constructor(adr, socket, teamSize){
+  constructor(socket, adr, teamSize, betAmount){
     this.address = adr;
     this.socket = socket;
     this.teamSize = teamSize;
+    this.betAmount = betAmount;
     this.status = false;
   }
 }

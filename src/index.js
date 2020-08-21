@@ -22,7 +22,7 @@ io.on('connect', async socket => {
   //make teams
   socket.on("play", data => {
     console.log("connect")
-    tronMachmaking.addPlayer({...data, teamSize: 1}, socket)
+    tronMachmaking.addPlayer({...data, teamSize: 2, betAmount: 100}, socket)
     tronMachmaking.matchTeam()
     tronMachmaking.sendInfo(io)
   })

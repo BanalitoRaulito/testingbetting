@@ -26,7 +26,7 @@ io.on('connect', async socket => {
 
 #
 #
-#### Only three simple functions: 1) add 2) match 3) accept
+### Only three functions: 1) add 2) match 3) accept
  - Add players with different team sizes
  - All transactions will be broadcasted once all of them have been recived and verified
 #
@@ -34,18 +34,19 @@ io.on('connect', async socket => {
 
 #### Initialize new TronMatchMaking(contract_adr, tronWeb_options)
 ```javascript
-// Inputs
+// INPUTS
 let contract_adr = "TNR4oeTsvfAfAbYGP2qmEWynFCfSXV6yH7" // Smart Contract Hash (Address)
 let tronWeb_options = {fullHost: 'https://api.nileex.io'} // Select the network (other tronWeb options)
 ```
 
 #### 1) addPlayer(data, socket)
 ```javascript
-// Inputs
+// INPUTS
 let data = {
     address: "TU5BFJopkor7gV82pBwBNxPpafYYViz1my", // client public key
     type: "connect", // or "cancel"
     teamSize: 1, // x amount of people in one team (in this case 1 means there is 1 player in Each team)
+    betAmount: 100 // bet amount is TRX
 }
 let socket // clients socket to send response msg <optional> but recommended
 
@@ -56,16 +57,16 @@ socket.on("msg", msg => {console.log(msg)})
 // RETURNS <str> "searching" or "cancel"
 ```
 
-#### matchTeam()
+#### 2) matchTeam()
 ```javascript
 // socket msg can be: "acceptNow"
 
 // RETURNS <str> undefined or "signNow"
 ```
 
-#### acceptTeam(data)
+#### 3) acceptTeam(data)
 ```javascript
-// Inputs
+// INPUTS
 let data = {
     address: "TU5BFJopkor7gV82pBwBNxPpafYYViz1my", // client public key
     signed: await tronWeb.trx.sign( // signed transaction with tronWeb in the front-end (look front-end example)

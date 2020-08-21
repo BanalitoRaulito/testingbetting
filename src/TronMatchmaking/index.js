@@ -9,19 +9,19 @@ module.exports = class TronMachmaking{
     this.tronWeb = new TronWeb(tronWeb_options);
 
     // searching people and ready are matched teams
-    this.searching = [];
-    this.ready = []
+    this.searchingPlayers = [];
+    this.readyTeams = []
   }
 
   addPlayer(data, socket){
-    let msg = addPlayer(socket, data, this.searching, this.ready, this.tronWeb)
+    let msg = addPlayer(socket, data, this.searchingPlayers, this.readyTeams, this.tronWeb)
     socket && socket.emit("msg", {msg})
     return msg
   }
   matchTeam(){
-    return matchTeam(this.searching, this.ready)
+    return matchTeam(this.searchingPlayers, this.readyTeams)
   }
   acceptTeam(data){
-    return acceptTeam(data, this.adr, this.ready, this.tronWeb)
+    return acceptTeam(data, this.adr, this.readyTeams, this.tronWeb)
   }
 }

@@ -4,9 +4,9 @@ module.exports = (socket, data, searching, ready, tronWeb) => {
   if(!tronWeb.isAddress(data.address)){ console.log("not a Tron address"); return }
   let address = data.address;
   // if not in for searching. push()
-  let theSearching = searching.find(f => f.address === address);
+  let player = searching.find(f => f.address === address);
   // is active team
-  let theReady = ready
+  let team = ready
     .filter(player => player.status === true)
     .find(player =>
       player.data.find(p => p.address === data.address
@@ -14,15 +14,15 @@ module.exports = (socket, data, searching, ready, tronWeb) => {
 
   //connect or cancel
   if(data.type === "connect"){
-    theSearching || theReady || searching.push(
-      new Player(data.address, socket, data.teamSize)
+    player || team || searching.push(
+      new Player(socket, data.address, data.teamSize, data.betAmount)
     )
-    if(theSearching && socket){ theSearching.socket = socket; }
+    if(player && socket){ player.socket = socket; }
 
     return "searching"
   }else if(data.type === "cancel"){
-    let theSearchingIndex = searching.findIndex(player => player.address === address);
-    searching.splice(theSearchingIndex, 1)
+    let playerIndex = searching.findIndex(player => player.address === address);
+    searching.splice(playerIndex, 1)
 
     console.log("cancel", searching)
     return "cancel"
