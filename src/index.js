@@ -12,7 +12,7 @@ app.use(express.static('../public'));
 
 
 var tronMachmaking = new TronMachmaking(
-  "TNR4oeTsvfAfAbYGP2qmEWynFCfSXV6yH7",
+  "TQK76o7zno5GvRB7N9s5sYdo2CUoxtojXe",
   key,
   {fullHost: 'https://api.nileex.io'}
 )
@@ -22,7 +22,7 @@ io.on('connect', async socket => {
   //make teams
   socket.on("play", data => {
     console.log("connect")
-    tronMachmaking.addPlayer({...data, teamSize: 2, betAmount: 100}, socket)
+    tronMachmaking.addPlayer({...data, teamSize: 1, betAmount: 100}, socket)
     tronMachmaking.matchTeam()
     tronMachmaking.sendInfo(io)
   })

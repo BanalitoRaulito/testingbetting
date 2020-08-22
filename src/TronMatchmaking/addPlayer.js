@@ -14,9 +14,12 @@ module.exports = (socket, data, searching, ready, tronWeb) => {
 
   //connect or cancel
   if(data.type === "connect"){
+    if(team) return "waitingSignature"
+
     player || team || searching.push(
       new Player(socket, data.address, data.teamSize, data.betAmount)
     )
+    if(!player && !team){console.log("new")}
     if(player && socket){ player.socket = socket; }
 
     return "searching"

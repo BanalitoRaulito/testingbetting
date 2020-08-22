@@ -27,8 +27,11 @@ io.on('connect', async socket => {
 #
 #
 ### Only three functions: 1) add 2) match 3) accept
- - Add players with different team sizes
+ - Add players with different team sizes and bet values
  - All transactions will be broadcasted once all of them have been recived and verified
+#
+these functions will send player socket msg (catch the msg in front-end)
+socket.on("msg", msg => {console.log(msg)})
 #
 #
 
@@ -48,20 +51,16 @@ let data = {
     teamSize: 1, // x amount of people in one team (in this case 1 means there is 1 player in Each team)
     betAmount: 100 // bet amount is TRX
 }
-let socket // clients socket to send response msg <optional> but recommended
+let socket = socket // clients socket to send response msg <optional> but recommended
 
-// if player has socket, catch the msg (front-end)
-socket.on("msg", msg => {console.log(msg)})
-// socket msg can be: "searching", "cancel"
-
-// RETURNS <str> "searching" or "cancel"
+// socket msg can be <str> "searching", "cancel"
+// RETURNS <str> "searching", "waitingSignature", "cancel"
 ```
 
 #### 2) matchTeam()
 ```javascript
-// socket msg can be: "acceptNow"
-
-// RETURNS <str> undefined or "signNow"
+// socket msg can be <str> "acceptNow"
+// RETURNS <str> null or "signNow"
 ```
 
 #### 3) acceptTeam(data)
@@ -69,12 +68,27 @@ socket.on("msg", msg => {console.log(msg)})
 // INPUTS
 let data = {
     address: "TU5BFJopkor7gV82pBwBNxPpafYYViz1my", // client public key
-    signed: await tronWeb.trx.sign( // signed transaction with tronWeb in the front-end (look front-end example)
-        await tronWeb.transactionBuilder.triggerSmartContract(adr, "bet()", options, [], address)
-    )
+    signed: signedTransaction
 }
 
-// socket msg can be: "searching", "acceptNow", "waitingRes", "failed", "complete"
+// socket msg can be <str> "searching", "acceptNow", "waitingRes", "failed", "complete"
+// RETURNS <obj> undefined, teamObject
+```
 
-// RETURNS <obj> undefined or teamObject
+#
+#
+#
+#### build Signed Transaction in front-end
+```javascript
+const adr = "TNR4oeTsvfAfAbYGP2qmEWynFCfSXV6yH7" // Smart Contract address
+const callFunc = "bet()" // function on Smart Contract to call
+const options = {
+    shouldPollResponse: true,
+    keepTxID: true,
+    callValue: 100000000 // betAmount in Sun
+}
+const address = "TU5BFJopkor7gV82pBwBNxPpafYYViz1my" // client public key
+
+let tx = await tronWeb.transactionBuilder.triggerSmartContract(adr, callFunc, options, [], address)
+signedTransaction = await tronWeb.trx.sign(tx.transaction) // this is what you need to send to back-end
 ```
