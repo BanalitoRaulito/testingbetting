@@ -24,14 +24,15 @@ io.on('connect', async socket => {
     console.log("connect")
     tronMachmaking.addPlayer({...data, teamSize: 1, betAmount: 100}, socket)
     tronMachmaking.matchTeam()
+    console.log("match ", tronMachmaking.searchingPlayers.length, tronMachmaking.searchingPlayers.map(p => p.status))
     tronMachmaking.sendInfo(io)
   })
 
   // deal sigs and connect
   socket.on('signed', async data => {
     console.log("sig recived")
-    let sentSign = await tronMachmaking.acceptTeam(data)
-    sentSign && await tronMachmaking.connect(sentSign, key)
+    let signs = await tronMachmaking.acceptTeam(data)
+    signs.complete && await tronMachmaking.connect(signs.sentSign, key)
     tronMachmaking.sendInfo(io)
   })
 
