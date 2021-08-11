@@ -13,7 +13,7 @@ module.exports = async (sentSign, key) => {
   }catch(err){
     console.log(err)
   }
-
+  console.log(sentSign)
   let betInfo = sentSign.map(s => {
     return {
       ...s,

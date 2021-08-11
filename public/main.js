@@ -76,7 +76,7 @@ socket.on("connectKey", data => {
   document.cookie = "connectKey="+data.key+"; path=/";
 })
 
-var hideAll = () => $("#play, #acceptNow, #waitingRes, #searching, #cancel, #failed, #loginPlz").hide()
+var hideAll = () => $("#play, #acceptNow, #waitingRes, #searching, #cancel, #failed, #loginPlz, #confirming").hide()
 socket.on("msg", async data => {
   const msg = data.msg;
   console.log(msg)
@@ -93,8 +93,17 @@ socket.on("msg", async data => {
       await signNow()
       break;
 
+    case "waitingSignature":
+      $("#acceptNow").show()
+      await signNow()
+      break;
+
     case "waitingRes":
       $("#waitingRes").show()
+      break;
+
+    case "confirming":
+      $("#confirming").show()
       break;
 
     case "failed":

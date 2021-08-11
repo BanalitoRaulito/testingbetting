@@ -4,7 +4,6 @@ module.exports = (unmatchedPlayers, ready) => {
       const key = `${player.teamSize}-${player.betAmount}`
       o[key] = o[key] || []
       o[key].push(player)
-      console.log(o)
       return o
     }, {})
   ).filter(([key, matches]) => {

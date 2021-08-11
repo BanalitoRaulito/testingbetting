@@ -28,7 +28,7 @@ module.exports = async (adr, betAmount, bets, tronWeb) => {
       return true
     }else{
       console.log("checks", feeLimit, check_address, check_adr, check_betAmount)
-      console.log(check_betAmount, value.call_value, betAmount)
+      console.log("checks_amount", check_betAmount, value.call_value, betAmount)
     }
   })
   if(!sigValues){
@@ -56,7 +56,7 @@ module.exports = async (adr, betAmount, bets, tronWeb) => {
   let balanceMap = bets.map(b => tronWeb.trx.getBalance(b.address))
   let balance = await Promise.all(balanceMap)
   if(!balance.every(b => b > betAmount)){
-    console.log(balance, balance.every(b => b > betAmount))
+    console.log("balance", balance, balance.every(b => b > betAmount))
     return
   }
 

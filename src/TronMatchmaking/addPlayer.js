@@ -1,7 +1,7 @@
 const Player = require('./Player.js')
 
 module.exports = (socket, data, searching, ready, tronWeb) => {
-  if(!tronWeb.isAddress(data.address)){ console.log("not a Tron address"); return }
+  if(!tronWeb.isAddress(data.address)){ console.log("not a Tron address"); return "notValidAdr" }
   let address = data.address;
   // if not in for searching. push()
   let player = searching.find(f => f.address === address);

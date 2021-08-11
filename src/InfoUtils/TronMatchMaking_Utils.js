@@ -10,6 +10,7 @@ module.exports = class TronMatchMaking_Utils extends TronMatchMaking{
     this.key = key;
   }
 
+  // info to front
   sendInfo(socket){
     let n_searching = this.searchingPlayers.map(a => {return {...a, socket: undefined}})
     var info = {
@@ -20,6 +21,7 @@ module.exports = class TronMatchMaking_Utils extends TronMatchMaking{
     socket.emit("sendInfo", {info})
   }
 
+  // push to oldGames
   saveBet(data){
     jwt.verify(data.game, this.key, (err, res) => {
       if(!err){
@@ -34,6 +36,7 @@ module.exports = class TronMatchMaking_Utils extends TronMatchMaking{
     })
   }
 
+  // removes or adds to gamesOn (playing now)
   editPlaying(data){
     let id = data.thisServerId
     if(!data.delete){
@@ -49,6 +52,7 @@ module.exports = class TronMatchMaking_Utils extends TronMatchMaking{
     console.log("games ON mapping", this.gamesOn)
   }
 
+  // connects to Free server
   connect(sentSign, key){
     return connect(sentSign, key)
   }
