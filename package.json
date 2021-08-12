@@ -12,7 +12,7 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "socket.io": "^2.3.0",
-    "tronweb": "^2.10.1",
+    "tronweb": "^4.0.0",
     "uuid": "^8.1.0"
   }
 }
