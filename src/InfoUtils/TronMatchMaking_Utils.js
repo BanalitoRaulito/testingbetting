@@ -1,4 +1,4 @@
-const TronMatchMaking = require("../TronMatchMaking/index.js")
+const TronMatchMaking = require("../TronMatchmaking/index.js")
 const connect = require("./connect.js")
 const jwt = require('jsonwebtoken');
 
