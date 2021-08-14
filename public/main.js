@@ -1,4 +1,5 @@
-const adr = "TQK76o7zno5GvRB7N9s5sYdo2CUoxtojXe";
+const {smartContractInfo} = require("../src/env");
+const smartContractAddress = smartContractInfo.address
 var address = '';
 var myPort = 3000;
 var socket = io.connect(window.location.hostname +':'+ myPort, {secure: true});
@@ -29,7 +30,7 @@ var play = async () => {
       console.log("looking for oponent", address)
       tronWeb.setAddress(address)
 
-      let inst = await tronWeb.contract().at(adr);
+      let inst = await tronWeb.contract().at(smartContractAddress);
       let res = await inst.showBet(address).call()
       let howMuchOnSmartContract = res.toNumber()
       console.log("SM balance", howMuchOnSmartContract)
@@ -52,7 +53,7 @@ var signNow = async () => {
   if(address){
     tronWeb.setAddress(address)
     try{
-      let tx = await tronWeb.transactionBuilder.triggerSmartContract(adr, "bet()", options, [], address)
+      let tx = await tronWeb.transactionBuilder.triggerSmartContract(smartContractAddress, "bet()", options, [], address)
       signed = await tronWeb.trx.sign(tx.transaction)
 
       socket.emit("signed", {address, signed})

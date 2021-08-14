@@ -10,7 +10,7 @@ let promiseAdr = () => {
         if(hex !== address && hex !== undefined && address !== ""){
           console.log("found", hex, address)
           resolve(hex)
-          window.location.reload();
+          //window.location.reload();
         }
       }
     }, 200)
@@ -25,6 +25,6 @@ window.addEventListener('message', async (res) => {
   }
   if (res.data.message
    && res.data.message.action == "setNode") {
-     window.location.reload();
+     //window.location.reload();
   }
 })
