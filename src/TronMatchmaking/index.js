@@ -3,7 +3,7 @@ const addPlayer = require("./addPlayer.js")
 const matchTeam = require("./matchTeam.js")
 const acceptTeam = require("./acceptTeam.js")
 
-module.exports = class TronMachmaking{
+module.exports = class TronMatchmaking{
   constructor(adr, tronWeb_options = {fullHost: 'https://api.shasta.trongrid.io'}){
     this.adr = adr;
     this.tronWeb = new TronWeb(tronWeb_options);
