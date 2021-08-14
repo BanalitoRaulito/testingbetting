@@ -2,7 +2,7 @@ const socket = require("socket.io")
 const express = require("express")
 var TronMatchmaking = require("./InfoUtils/TronMatchMaking_Utils.js")
 const key = "secret"
-const {smartContractInfo} = require('../env.js')
+const {smartContractInfo} = require('./env.js')
 
 const port = 3000
 var app = express()
