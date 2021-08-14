@@ -2,9 +2,10 @@ const TronWeb = require("tronweb")
 const addPlayer = require("./addPlayer.js")
 const matchTeam = require("./matchTeam.js")
 const acceptTeam = require("./acceptTeam.js")
+const {smartContractInfo} = require('./env.js')
 
 module.exports = class TronMatchmaking{
-  constructor(adr, tronWeb_options = {fullHost: 'https://api.shasta.trongrid.io'}){
+  constructor(adr, tronWeb_options = {fullHost: smartContractInfo.address}){
     this.adr = adr;
     this.tronWeb = new TronWeb(tronWeb_options);
 
