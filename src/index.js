@@ -1,7 +1,8 @@
 const socket = require("socket.io")
 const express = require("express")
-var TronMachmaking = require("./InfoUtils/TronMatchMaking_Utils.js")
+var TronMatchmaking = require("./InfoUtils/TronMatchMaking_Utils.js")
 const key = "secret"
+const {smartContractInfo} = require('../env.js')
 
 const port = 3000
 var app = express()
@@ -11,10 +12,10 @@ var server = app.listen(port, () => {
 app.use(express.static('../public'));
 
 
-var tronMachmaking = new TronMachmaking(
-  "TQK76o7zno5GvRB7N9s5sYdo2CUoxtojXe",
+var tronMatchmaking = new TronMatchmaking(
+    smartContractInfo.address,
   key,
-  {fullHost: 'https://api.nileex.io'}
+  {fullHost: smartContractInfo.network}
 )
 
 var io = socket(server);
@@ -22,35 +23,35 @@ io.on('connect', async socket => {
   //make teams
   socket.on("play", data => {
     console.log("connect")
-    tronMachmaking.addPlayer({...data, teamSize: 1, betAmount: 100}, socket)
-    tronMachmaking.matchTeam()
-    console.log("match ", tronMachmaking.searchingPlayers.length, tronMachmaking.searchingPlayers.map(p => p.status))
-    tronMachmaking.sendInfo(io)
+    tronMatchmaking.addPlayer({...data, teamSize: 1, betAmount: 100}, socket)
+    tronMatchmaking.matchTeam()
+    console.log("match ", tronMatchmaking.searchingPlayers.length, tronMatchmaking.searchingPlayers.map(p => p.status))
+    tronMatchmaking.sendInfo(io)
   })
 
   // deal sigs and connect
   socket.on('signed', async data => {
     console.log("sig recived")
-    let signs = await tronMachmaking.acceptTeam(data)
-    signs.complete && await tronMachmaking.connect(signs.sentSign, key)
-    tronMachmaking.sendInfo(io)
+    let signs = await tronMatchmaking.acceptTeam(data)
+    signs.complete && await tronMatchmaking.connect(signs.sentSign, key)
+    tronMatchmaking.sendInfo(io)
   })
 
 
   //save oldBet
   socket.on("saveBet", data => {
     console.log("saving old bet", data)
-    tronMachmaking.saveBet(data)
-    tronMachmaking.sendInfo(io)
+    tronMatchmaking.saveBet(data)
+    tronMatchmaking.sendInfo(io)
   })
 
   //send info back
-  socket.on("showInfo", () => tronMachmaking.sendInfo(socket))
+  socket.on("showInfo", () => tronMatchmaking.sendInfo(socket))
 
   // edit gamesOn list
   socket.on("editPlaying", data => {
     console.log("edit playing")
-    tronMachmaking.editPlaying(data)
-    tronMachmaking.sendInfo(io)
+    tronMatchmaking.editPlaying(data)
+    tronMatchmaking.sendInfo(io)
   })
 })

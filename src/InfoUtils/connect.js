@@ -1,7 +1,7 @@
 const ioc = require('socket.io-client');
 const {v4} = require('uuid');
 const jwt = require('jsonwebtoken');
-const servers = require('../serversFile.js')
+const {servers} = require('../env.js')
 
 module.exports = async (sentSign, key) => {
   console.log("start game", servers)
