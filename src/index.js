@@ -4,7 +4,7 @@ var TronMatchmaking = require("./InfoUtils/TronMatchMaking_Utils.js")
 const key = "secret"
 const {smartContractInfo} = require('./env.js')
 
-const port = 3000
+const port = 80
 var app = express()
 var server = app.listen(port, () => {
   console.log('Running on localhost:', port)

@@ -1,7 +1,7 @@
 const {smartContractInfo} = require("../src/env");
 const smartContractAddress = smartContractInfo.address
 var address = '';
-var myPort = 3000;
+var myPort = 80;
 var socket = io.connect(window.location.hostname +':'+ myPort, {secure: true});
 let signed;
 const options = {
