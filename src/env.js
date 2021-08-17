@@ -15,7 +15,7 @@ const allServers = [
   {ip: ip[1], url: url[1], port: "4000", label: label[0]}
 ]
 
-if (module) {
+if (typeof module !== 'undefined') {
   module.exports = {
     smartContractInfo,
     allServers
