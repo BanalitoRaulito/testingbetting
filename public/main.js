@@ -1,4 +1,3 @@
-const {smartContractInfo} = require("../src/env");
 const smartContractAddress = smartContractInfo.address
 var address = '';
 var myPort = 80;
