@@ -1,7 +1,7 @@
 //url should be https://tokenswim.com/servers/env.js
 
 const smartContractInfo = {
-  address: 'TUH48pMmvUqzbLnRCrL2NSJZQq1XvFrfzp',
+  address: 'TPy3vMF9Ct7gZ51qPth19EdDju6zYoDF2R',
   network: 'https://api.shasta.trongrid.io',
 }
 

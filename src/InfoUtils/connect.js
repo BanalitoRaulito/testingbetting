@@ -35,7 +35,7 @@ module.exports = async (sentSign, key) => {
   let bet = jwt.sign({betInfo}, key)
   console.log("bet", bet)
   //let connect = server
-  let connect = ioc("http://localhost:4000")
+  let connect = ioc("http://localhost:3000")
   connect.emit("addBet", {bet});
 
   // send key to client an redirect
